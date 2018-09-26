@@ -10,7 +10,7 @@ export class ListsController {
     @Get({path: '/'})
     async lists(request: e.Request, response: e.Response) {
         try {
-            const lists = await this.wunderlist_service.lists();
+            const lists = await this.wunderlist_service.lists.get();
 
             response.send(`<script>console.log(${JSON.stringify(lists)})</script>`);
         }
