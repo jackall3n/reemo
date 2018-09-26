@@ -1,7 +1,8 @@
 import ApiService from "./api.service";
+import {AxiosPromise} from 'axios';
 
 export class WunderlistService {
-    api_service = new ApiService()
+    api_service = new ApiService();
 
     access_token(code : string) {
         let request_config = {
@@ -14,19 +15,19 @@ export class WunderlistService {
                     client_secret : '873793c1dc8e1cc9b9663a3fa23be51da8059a0f5412469de8ee51aadc40'
                 }
             }
-        }
+        };
 
         return this.api_service.post(request_config)
     }
 
-    lists() {
+    lists() : AxiosPromise<List[]> {
         let request_config = {
             configuration:{
                 baseURL:'http://a.wunderlist.com/api/v1',
                 url :'lists'
             },
             authorise: true
-        }
+        };
 
         return this.api_service.get(request_config)
     }
@@ -41,7 +42,7 @@ export class WunderlistService {
                 }
             },
             authorise: true
-        }
+        };
 
         return this.api_service.get(request_config)
     }
