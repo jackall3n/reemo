@@ -1,13 +1,6 @@
 import * as e from "express"
 import {Controller} from "../llama";
 import {Get} from "../llama/get";
-import User, { IUser } from "../db/schemas/user";
-import * as jwt from 'jsonwebtoken';
-import configuration from '../config';
-import * as _ from 'lodash';
-import ApiService from "../services/api.service";
-import Donation from "../db/schemas/donation";
-import Team from '../db/schemas/team';
 import { WunderlistService } from "../services/wunderlist.service";
 
 @Controller()

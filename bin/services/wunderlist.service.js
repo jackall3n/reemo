@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_service_1 = require("./api.service");
 class WunderlistService {
@@ -20,14 +28,16 @@ class WunderlistService {
         return this.api_service.post(request_config);
     }
     lists() {
-        let request_config = {
-            configuration: {
-                baseURL: 'http://a.wunderlist.com/api/v1',
-                url: 'lists'
-            },
-            authorise: true
-        };
-        return this.api_service.get(request_config);
+        return __awaiter(this, void 0, void 0, function* () {
+            let request_config = {
+                configuration: {
+                    baseURL: 'http://a.wunderlist.com/api/v1',
+                    url: 'lists'
+                },
+                authorise: true
+            };
+            return yield this.api_service.get(request_config);
+        });
     }
     tasks(list_id) {
         let request_config = {

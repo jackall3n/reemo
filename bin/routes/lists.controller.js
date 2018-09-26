@@ -21,26 +21,54 @@ const e = require("express");
 const llama_1 = require("../llama");
 const get_1 = require("../llama/get");
 const wunderlist_service_1 = require("../services/wunderlist.service");
-let AuthController = class AuthController {
+let ListsController = class ListsController {
     constructor() {
         this.wunderlist_service = new wunderlist_service_1.WunderlistService();
     }
-    token(request, response) {
+    lists(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            const data = yield this.wunderlist_service.access_token(request.query.code);
-            response.send({
-                access_token: data.access_token
-            });
+            try {
+                const lists = yield this.wunderlist_service.lists();
+                response.send(`<script>console.log(${JSON.stringify(lists)})</script>`);
+            }
+            catch (error) {
+                response.send('error');
+            }
+        });
+    }
+    tasks(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const lists = yield this.wunderlist_service.lists();
+                const task_requests = lists.map(list => new Promise((result) => __awaiter(this, void 0, void 0, function* () {
+                    const tasks = yield this.wunderlist_service.tasks(list.id);
+                    result({
+                        list,
+                        tasks
+                    });
+                })));
+                const tasks = yield Promise.all(task_requests);
+                response.send(`<script>console.log(${JSON.stringify(tasks)})</script>`);
+            }
+            catch (error) {
+                response.send('error');
+            }
         });
     }
 };
 __decorate([
-    get_1.Get({ path: '/token' }),
+    get_1.Get({ path: '/' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "token", null);
-AuthController = __decorate([
+], ListsController.prototype, "lists", null);
+__decorate([
+    get_1.Get({ path: '/tasks' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], ListsController.prototype, "tasks", null);
+ListsController = __decorate([
     llama_1.Controller()
-], AuthController);
-exports.AuthController = AuthController;
+], ListsController);
+exports.ListsController = ListsController;

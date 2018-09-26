@@ -10,7 +10,7 @@ export class ListsController {
     @Get({path: '/'})
     async lists(request: e.Request, response: e.Response) {
         try {
-            const lists = this.wunderlist_service.lists();
+            const lists = await this.wunderlist_service.lists();
 
             response.send(`<script>console.log(${JSON.stringify(lists)})</script>`);
         }
@@ -22,9 +22,9 @@ export class ListsController {
     @Get({path: '/tasks'})
     async tasks(request: e.Request, response: e.Response) {
         try {
-            const lists = this.wunderlist_service.lists() as any;
-            const task_requests = lists.map((list : any) => new Promise(async result => {
-                const tasks = this.wunderlist_service.tasks(list.id);
+            const lists = await this.wunderlist_service.lists();
+            const task_requests = lists.map(list => new Promise(async result => {
+                const tasks = await this.wunderlist_service.tasks(list.id);
 
                 result({
                     list,
@@ -32,7 +32,7 @@ export class ListsController {
                 })
             }));
 
-            const tasks = Promise.all(task_requests);
+            const tasks = await Promise.all(task_requests);
 
             response.send(`<script>console.log(${JSON.stringify(tasks)})</script>`);
         }

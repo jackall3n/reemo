@@ -5,6 +5,8 @@ exports.default = {
         address: process.env.DB_STRING
     },
     auth: {
+        client_id: process.env.WUNDERLIST_CLIENT_ID,
+        client_secret: process.env.WUNDERLIST_CLIENT_SECRET,
         secret: process.env.JWT_SECRET || 'test'
     },
     email: {

@@ -22,15 +22,15 @@ export interface RequestConfiguration {
 @Service()
 export default class ApiService {
 
-    get<T>(requestOptions: RequestOptions<T>): AxiosPromise<T> {
-        return this.request("GET", requestOptions)
+    async get<T>(requestOptions: RequestOptions<T>): Promise<T> {
+        return await this.request<T>("GET", requestOptions);
     }
 
-    post<T>(requestOptions: RequestOptions<T>): AxiosPromise<T> {
-        return this.request("POST", requestOptions)
+    async post<T>(requestOptions: RequestOptions<T>): Promise<T> {
+        return await this.request("POST", requestOptions)
     }
 
-    private request<T>(method: string, requestOptions: RequestOptions<T>): AxiosPromise<T> {
+    private async request<T>(method: string, requestOptions: RequestOptions<T>): Promise<T> {
         let config = {
             method: method,
             ...requestOptions.configuration
@@ -45,18 +45,19 @@ export default class ApiService {
             }
         }
 
-        //let map = requestOptions.mapper ? Injector.resolve<Mapper<T>>(requestOptions.mapper) : null;
+         // let map = requestOptions.mapper ? Injector.resolve<Mapper<T>>(requestOptions.mapper) : null;
 
-        return axios.request(config).then(response => {
-            let data = requestOptions.dataPath ? this.dive(requestOptions.dataPath, response.data) : response.data;
+        try {
+            const response = await axios.request(config);
 
-            return /*map ? map.map(data) :*/ data;
-        }).catch(error => {
+            return requestOptions.dataPath ? this.dive(requestOptions.dataPath, response.data) : response.data;
+        }
+        catch(error) {
             console.error("An API call failed with");
             console.error(error);
 
             return error;
-        })
+        }
     }
 
     private dive(path: string | string[], data: any): any {

@@ -1,10 +1,10 @@
 import ApiService from "./api.service";
-import {AxiosPromise} from 'axios';
+import {List, Task}  from '../types/wunderlist';
 
 export class WunderlistService {
     api_service = new ApiService();
 
-    access_token(code : string) {
+    access_token(code : string) : Promise<{ access_token: string }> {
         let request_config = {
             configuration:{
                 baseURL: 'https://www.wunderlist.com',
@@ -17,10 +17,10 @@ export class WunderlistService {
             }
         };
 
-        return this.api_service.post(request_config)
+        return this.api_service.post<{ access_token: string }>(request_config)
     }
 
-    lists() : AxiosPromise<List[]> {
+    async lists() : Promise<List[]> {
         let request_config = {
             configuration:{
                 baseURL:'http://a.wunderlist.com/api/v1',
@@ -29,10 +29,10 @@ export class WunderlistService {
             authorise: true
         };
 
-        return this.api_service.get(request_config)
+        return await this.api_service.get<List[]>(request_config)
     }
 
-    tasks(list_id: string) {
+    tasks(list_id: number) : Promise<Task[]> {
         let request_config = {
             configuration:{
                 baseURL:'http://a.wunderlist.com/api/v1',
@@ -44,6 +44,6 @@ export class WunderlistService {
             authorise: true
         };
 
-        return this.api_service.get(request_config)
+        return this.api_service.get<Task[]>(request_config)
     }
 }
