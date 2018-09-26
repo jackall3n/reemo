@@ -10,9 +10,9 @@ export class TasksController {
     @Get({path: '/'})
     async tasks(request: e.Request, response: e.Response) {
         try {
-            const lists = await this.wunderlist_service.lists();
+            const lists = await this.wunderlist_service.lists.get();
             const task_requests = lists.map(list => new Promise(async result => {
-                const tasks = await this.wunderlist_service.tasks(list.id);
+                const tasks = await this.wunderlist_service.tasks.get(list.id);
 
                 result({
                     list,
@@ -33,7 +33,7 @@ export class TasksController {
     async task(request: e.Request, response: e.Response) {
         const {id} = request.params;
         try {
-            const tasks = await this.wunderlist_service.tasks(id);
+            const tasks = await this.wunderlist_service.tasks.getOne(id);
 
             response.send(`<script>console.log(${JSON.stringify(tasks)})</script>`);
         }
