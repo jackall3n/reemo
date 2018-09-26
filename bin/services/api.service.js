@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
-const injector_service_1 = require("./injector.service");
 const llama_1 = require("../llama");
 let ApiService = class ApiService {
     get(requestOptions) {
@@ -18,11 +17,12 @@ let ApiService = class ApiService {
     }
     request(method, requestOptions) {
         let config = Object.assign({ method: method }, requestOptions.configuration);
-        config.headers = Object.assign({ "x-api-key": "627f766b" }, config.headers);
-        let map = requestOptions.mapper ? injector_service_1.Injector.resolve(requestOptions.mapper) : null;
+        if (requestOptions.authorise) {
+            config.headers = Object.assign({}, config.headers, { 'X-Client-ID': 'ca64d8b13659be4a3318', 'X-Access-Token': '51642767be1a232258f4e06959987c73b8bf2ac537a9fbf40dd7452533b0' });
+        }
         return axios_1.default.request(config).then(response => {
             let data = requestOptions.dataPath ? this.dive(requestOptions.dataPath, response.data) : response.data;
-            return map ? map.map(data) : data;
+            return data;
         }).catch(error => {
             console.error("An API call failed with");
             console.error(error);

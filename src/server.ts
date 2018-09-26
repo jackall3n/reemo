@@ -3,8 +3,8 @@ import * as logger from "morgan"
 import * as bodyParser from "body-parser";
 import AppModule from "./app.module";
 import RouteService from "./services/route.service";
-import * as passport from "passport";
-import passportConfiguration from './config/passport';
+//import * as passport from "passport";
+//import passportConfiguration from './config/passport';
 
 export default class ApiServer {
     public app: express.Application;
@@ -36,8 +36,8 @@ export default class ApiServer {
             extended: true
         }));
 
-        this.app.use(passport.initialize());
-        passportConfiguration(passport);
+        //this.app.use(passport.initialize());
+        //passportConfiguration(passport);
 
         this.app.use((error: any, request: express.Request, response: express.Response, next: express.NextFunction) => {
             error.status = 404;

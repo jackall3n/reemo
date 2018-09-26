@@ -4,6 +4,7 @@ import {Injector} from "./injector.service";
 import {Service, Type} from "../llama";
 
 export interface RequestOptions<T> {
+    authorise?: boolean,
     dataPath?: string;
     mapper?: Type<Mapper<T>>,
     configuration: RequestConfiguration
@@ -14,7 +15,8 @@ export interface RequestConfiguration {
     baseURL?: string;
     url: string;
     headers?: { [key: string]: string }
-    params?: { [key: string]: string | number }
+    params?: { [key: string]: string | number },
+    body?: { [key: string]: string }
 }
 
 @Service()
@@ -34,14 +36,21 @@ export default class ApiService {
             ...requestOptions.configuration
         };
 
-        config.headers = {"x-api-key": "627f766b", ...config.headers};
+        if(requestOptions.authorise) 
+        {
+            config.headers = {
+                ...config.headers,
+                'X-Client-ID' : 'ca64d8b13659be4a3318',
+                'X-Access-Token' : '51642767be1a232258f4e06959987c73b8bf2ac537a9fbf40dd7452533b0'
+            }
+        }
 
-        let map = requestOptions.mapper ? Injector.resolve<Mapper<T>>(requestOptions.mapper) : null;
+        //let map = requestOptions.mapper ? Injector.resolve<Mapper<T>>(requestOptions.mapper) : null;
 
         return axios.request(config).then(response => {
             let data = requestOptions.dataPath ? this.dive(requestOptions.dataPath, response.data) : response.data;
 
-            return map ? map.map(data) : data;
+            return /*map ? map.map(data) :*/ data;
         }).catch(error => {
             console.error("An API call failed with");
             console.error(error);

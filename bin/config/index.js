@@ -5,7 +5,7 @@ exports.default = {
         address: process.env.DB_STRING
     },
     auth: {
-        secret: process.env.JWT_SECRET
+        secret: process.env.JWT_SECRET || 'test'
     },
     email: {
         host: process.env.EMAIL_HOST,
