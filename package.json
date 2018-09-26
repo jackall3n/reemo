@@ -5,7 +5,8 @@
   "scripts": {
     "nodemon": "nodemon ./bin/www",
     "node": "node ./bin/www",
-    "start": "concurrently \"tsc --watch\" \"nodemon ./bin/www\""
+    "watch": "concurrently \"tsc --watch\" \"nodemon ./bin/www\"",
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "@types/lodash": "^4.14.109",
@@ -25,7 +26,6 @@
     "morgan": "~1.9.0",
     "nodemailer": "^4.6.6",
     "nodemailer-smtp-transport": "^2.7.4",
-    "nodemon": "^1.18.4",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "reflect-metadata": "^0.1.12",

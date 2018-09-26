@@ -43,7 +43,17 @@ db.open(() => {
 
 db.connect();*/
 
-server.listen(port)
+server.listen(port);
+
+process.on('uncaughtException', error => {
+    console.log('uncaughtException', error);
+    process.exit(1);
+});
+
+process.on('SIGTERM', error => {
+    console.log('SIGTERM', error);
+    process.exit(1);
+});
 
 server.on('error', (error: any) => {
     if (error.syscall !== 'listen') {
@@ -65,7 +75,9 @@ server.on('error', (error: any) => {
             process.exit(1);
             break;
         default:
-            throw error;
+            console.log(error.code);
+            process.exit(1);
+            // throw error;
     }
 });
 

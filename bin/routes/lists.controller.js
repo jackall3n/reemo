@@ -28,29 +28,25 @@ let ListsController = class ListsController {
     lists(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const lists = yield this.wunderlist_service.lists();
+                const lists = yield this.wunderlist_service.lists.get();
+                console.log('lists', lists);
                 response.send(`<script>console.log(${JSON.stringify(lists)})</script>`);
             }
             catch (error) {
+                console.log(error);
                 response.send('error');
             }
         });
     }
-    tasks(request, response) {
+    list(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { id } = request.params;
             try {
-                const lists = yield this.wunderlist_service.lists();
-                const task_requests = lists.map(list => new Promise((result) => __awaiter(this, void 0, void 0, function* () {
-                    const tasks = yield this.wunderlist_service.tasks(list.id);
-                    result({
-                        list,
-                        tasks
-                    });
-                })));
-                const tasks = yield Promise.all(task_requests);
-                response.send(`<script>console.log(${JSON.stringify(tasks)})</script>`);
+                const list = yield this.wunderlist_service.lists.getOne(id);
+                response.send(`<script>console.log(${JSON.stringify(list)})</script>`);
             }
             catch (error) {
+                console.log(error);
                 response.send('error');
             }
         });
@@ -63,11 +59,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ListsController.prototype, "lists", null);
 __decorate([
-    get_1.Get({ path: '/tasks' }),
+    get_1.Get({ path: '/:id' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], ListsController.prototype, "tasks", null);
+], ListsController.prototype, "list", null);
 ListsController = __decorate([
     llama_1.Controller()
 ], ListsController);

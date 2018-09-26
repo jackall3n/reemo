@@ -1,7 +1,7 @@
 import * as e from "express"
 import {Controller} from "../llama";
 import {Get} from "../llama/get";
-import { WunderlistService } from "../services/wunderlist.service";
+import {WunderlistService} from "../services/wunderlist.service";
 
 @Controller()
 export class RootController {

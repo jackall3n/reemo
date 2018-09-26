@@ -23,24 +23,6 @@ let RootController = class RootController {
         let state = "dead";
         response.send(`<a href="https://www.wunderlist.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&state=${state}">Go</a>`);
     }
-    lists(request, response) {
-        this.wunderlist_service.lists().then(lists => {
-            response.send(`<script>console.log(${JSON.stringify(lists)})</script>`);
-        }).catch(_ => response.send('error'));
-    }
-    tasks(request, response) {
-        this.wunderlist_service.lists().then((lists) => {
-            console.log('Found lists:', lists.length);
-            let task_promises = lists.map((list) => {
-                return new Promise((res, rej) => {
-                    this.wunderlist_service.tasks(list.id).then((tasks) => {
-                        res({ list, tasks });
-                    });
-                });
-            });
-            Promise.all(task_promises).then(res => response.send(`<script>console.log(${JSON.stringify(res)})</script>`));
-        }).catch(_ => response.send('error'));
-    }
 };
 __decorate([
     get_1.Get({ path: '/' }),
@@ -48,18 +30,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], RootController.prototype, "hi", null);
-__decorate([
-    get_1.Get({ path: '/lists' }),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", void 0)
-], RootController.prototype, "lists", null);
-__decorate([
-    get_1.Get({ path: '/tasks' }),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", void 0)
-], RootController.prototype, "tasks", null);
 RootController = __decorate([
     llama_1.Controller()
 ], RootController);

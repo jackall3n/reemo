@@ -13,6 +13,14 @@ let max_connection_attempts = 5;
 app.set('port', port);
 let server = http_1.createServer(app);
 server.listen(port);
+process.on('uncaughtException', error => {
+    console.log('uncaughtException', error);
+    process.exit(1);
+});
+process.on('SIGTERM', error => {
+    console.log('SIGTERM', error);
+    process.exit(1);
+});
 server.on('error', (error) => {
     if (error.syscall !== 'listen') {
         throw error;
@@ -30,7 +38,8 @@ server.on('error', (error) => {
             process.exit(1);
             break;
         default:
-            throw error;
+            console.log(error.code);
+            process.exit(1);
     }
 });
 server.on('listening', () => {

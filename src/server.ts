@@ -3,8 +3,6 @@ import * as logger from "morgan"
 import * as bodyParser from "body-parser";
 import AppModule from "./app.module";
 import RouteService from "./services/route.service";
-//import * as passport from "passport";
-//import passportConfiguration from './config/passport';
 
 export default class ApiServer {
     public app: express.Application;

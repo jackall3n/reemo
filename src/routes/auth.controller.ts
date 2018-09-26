@@ -9,10 +9,8 @@ export class AuthController {
 
     @Get({path: '/token'})
     async token(request: e.Request, response: e.Response) {
-        const data = await this.wunderlist_service.auth.access_token(request.query.code);
+        const {access_token} = await this.wunderlist_service.auth.access_token(request.query.code);
 
-        response.send({
-            access_token: data.access_token
-        });
+        response.send({access_token});
     }
 }

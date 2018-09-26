@@ -1,33 +1,38 @@
 import ApiService from "./api.service";
-import {List, Task}  from '../types/wunderlist';
+import {List, Task} from '../types/wunderlist';
 
 export class WunderlistService {
     api_service = new ApiService();
 
     auth = {
-        access_token: async (code : string) : Promise<{ access_token: string }> => {
+        access_token: async (code: string): Promise<{ access_token: string }> => {
             let request_config = {
-                configuration:{
+                configuration: {
                     baseURL: 'https://www.wunderlist.com',
-                    url:'oauth/access_token',
+                    url: 'oauth/access_token',
                     data: {
                         code,
                         client_id: 'ca64d8b13659be4a3318',
-                        client_secret : '873793c1dc8e1cc9b9663a3fa23be51da8059a0f5412469de8ee51aadc40'
+                        client_secret: '873793c1dc8e1cc9b9663a3fa23be51da8059a0f5412469de8ee51aadc40'
                     }
                 }
             };
 
-            return await this.api_service.post<{ access_token: string }>(request_config)
+            try {
+                return await this.api_service.post<{ access_token: string }>(request_config)
+            }
+            catch (error) {
+                throw error;
+            }
         }
     };
 
     tasks = {
-        get: async (list_id: number) : Promise<List[]> => {
+        get: async (list_id: number): Promise<List[]> => {
             let request_config = {
-                configuration:{
-                    baseURL:'http://a.wunderlist.com/api/v1',
-                    url :'tasks',
+                configuration: {
+                    baseURL: 'http://a.wunderlist.com/api/v1',
+                    url: 'tasks',
                     params: {
                         list_id
                     }
@@ -37,11 +42,11 @@ export class WunderlistService {
 
             return this.api_service.get<Task[]>(request_config)
         },
-        getOne: async (id: number) : Promise<List[]> => {
+        getOne: async (id: number): Promise<List[]> => {
             let request_config = {
-                configuration:{
-                    baseURL:'http://a.wunderlist.com/api/v1',
-                    url :'tasks/:id',
+                configuration: {
+                    baseURL: 'http://a.wunderlist.com/api/v1',
+                    url: 'tasks/:id',
                     params: {
                         id
                     }
@@ -54,30 +59,27 @@ export class WunderlistService {
     };
 
     lists = {
-        get: async () : Promise<List[]> => {
+        get: async (): Promise<List[]> => {
             let request_config = {
-                configuration:{
-                    baseURL:'http://a.wunderlist.com/api/v1',
-                    url : 'lists/:id'
+                configuration: {
+                    baseURL: 'http://a.wunderlist.com/api/v1',
+                    url: 'lists'
                 },
                 authorise: true
             };
 
             return await this.api_service.get<List[]>(request_config)
         },
-        getOne: async (id: number) : Promise<List[]> => {
+        getOne: async (id: number): Promise<List> => {
             let request_config = {
-                configuration:{
-                    baseURL:'http://a.wunderlist.com/api/v1',
-                    url : 'lists/:id',
-                    params: {
-                        id
-                    }
+                configuration: {
+                    baseURL: 'http://a.wunderlist.com/api/v1',
+                    url: `lists/${id}`
                 },
                 authorise: true
             };
 
-            return await this.api_service.get<List[]>(request_config)
+            return await this.api_service.get<List>(request_config)
         }
     };
 }
