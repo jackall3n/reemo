@@ -35,7 +35,7 @@ export class TasksController {
         try {
             const tasks = await this.wunderlist_service.tasks(id);
 
-            response.send({ tasks })
+            response.send(`<script>console.log(${JSON.stringify(tasks)})</script>`);
         }
         catch (error) {
             response.send('error')
