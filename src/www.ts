@@ -3,16 +3,16 @@
 import appServer from "./server";
 import * as debug from "debug";
 import * as env from "dotenv";
-import * as passport from 'passport';
+//import * as passport from 'passport';
 
-import Database from './db';
-import config from './config';
+// import Database from './db';
+// import config from './config';
 
 import {createServer} from "http";
 
 env.load();
 
-let port = normalizePort(process.env.PORT || 3000);
+let port = normalizePort(process.env.PORT || 5678);
 let app = appServer.bootstrap().app;
 
 let connection_attempts = 0;
@@ -22,7 +22,7 @@ app.set('port', port);
 
 let server = createServer(app);
 
-let db = new Database(config.database.address);
+/*let db = new Database(config.database.address);
 
 db.onError((error) => {
    console.log(error)
@@ -41,7 +41,9 @@ db.open(() => {
     server.listen(port)
 });
 
-db.connect();
+db.connect();*/
+
+server.listen(port)
 
 server.on('error', (error: any) => {
     if (error.syscall !== 'listen') {

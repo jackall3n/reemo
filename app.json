@@ -1,12 +1,15 @@
 {
-  "name": "llama-api",
+  "name": "reemo",
   "scripts": {
   },
   "env": {
-    "REDDIT_CLIENT_ID": {
+    "WUNDERLIST_CLIENT_ID": {
       "required": true
     },
-    "REDDIT_CLIENT_SECRET": {
+    "WUNDERLIST_CLIENT_SECRET": {
+      "required": true
+    },
+    "JWT_SECRET": {
       "required": true
     }
   },

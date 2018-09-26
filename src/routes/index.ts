@@ -8,6 +8,9 @@ import {AdminController} from "./admin.controller";
 import { EmailController } from "./email.controller";
 
 let routes: any[] = [{
+    path: '/',
+    controller: RootController
+},{
     path: "/me",
     controller: MeController
 },{
